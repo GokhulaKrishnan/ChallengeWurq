@@ -2,6 +2,7 @@ import { Instance, SnapshotOut, types, flow } from "mobx-state-tree"
 import { SessionModel } from "./Session"
 import { sessionApi } from "@/services/api/apiUser"
 import { SessionItem } from "@/services/api"
+import { colors } from "@/theme"
 
 /*
  * UserStore - Manages a collection of user sessions and loading state.
@@ -17,9 +18,16 @@ export const SessionStoreModel = types
      * Here creating a function that should be able to read the total fees.
      */
     get totalFees() {
-      return self.sessions.reduce((acc, curr) => {
+      return this.positiveAgeUsers.reduce((acc, curr) => {
         return acc + curr.user.fee
       }, 0)
+    },
+
+    // A view function to read only positive aged users
+    get positiveAgeUsers() {
+      return self.sessions.filter((ele) => {
+        return ele.user.age > 0
+      })
     },
   }))
   .actions((self) => {

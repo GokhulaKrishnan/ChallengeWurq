@@ -18,7 +18,12 @@ export const UserListScreen = observer(function UserListScreen() {
   const renderSession = ({ item: session }: { item: SessionModel }) => {
     return (
       <View
-        style={{ backgroundColor: "white", padding: 10, borderBottomWidth: 1, borderColor: "#ccc" }}
+        style={{
+          backgroundColor: session.cardColor,
+          padding: 10,
+          borderBottomWidth: 1,
+          borderColor: "#ccc",
+        }}
       >
         <Text>ID: {`${session.id}`}</Text>
         <Text>
@@ -48,7 +53,7 @@ export const UserListScreen = observer(function UserListScreen() {
       <Text style={{ fontSize: 18, marginBottom: 10 }}>Total Fees: {sessionStore.totalFees}</Text>
 
       <FlatList
-        data={sessionStore.sessions}
+        data={sessionStore.positiveAgeUsers}
         renderItem={renderSession}
         keyExtractor={(user) => `${user.id}`}
         ListEmptyComponent={() => <Text>No users found</Text>}
