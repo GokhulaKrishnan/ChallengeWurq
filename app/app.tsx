@@ -29,6 +29,7 @@ import * as storage from "./utils/storage"
 import { customFontsToLoad } from "./theme"
 import { KeyboardProvider } from "react-native-keyboard-controller"
 import { loadDateFnsLocale } from "./utils/formatDate"
+import { UserListScreen } from "./screens/SessionListScreen"
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
@@ -106,11 +107,13 @@ export function App() {
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <KeyboardProvider>
-        <AppNavigator
+        {/* <AppNavigator
           linking={linking}
           initialState={initialNavigationState}
           onStateChange={onNavigationStateChange}
-        />
+        /> */}
+        {/* Testing whether we can render the data from the server */}
+        <UserListScreen />
       </KeyboardProvider>
     </SafeAreaProvider>
   )

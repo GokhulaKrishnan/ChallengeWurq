@@ -21,6 +21,31 @@ export interface EpisodeItem {
   categories: string[]
 }
 
+export interface SessionItem {
+  id: number
+  date: string
+  location: string
+  user: {
+    name: string
+    lastname: string
+    age: number
+    fee: number
+  }
+}
+
+export interface ApiUserResponse
+  extends Array<{
+    id: number
+    date: string
+    location: string
+    user: {
+      name: string
+      lastname: string
+      age: number
+      fee: number
+    }
+  }> {}
+
 export interface ApiFeedResponse {
   status: string
   feed: {
