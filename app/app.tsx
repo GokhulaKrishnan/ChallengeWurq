@@ -30,6 +30,7 @@ import { customFontsToLoad } from "./theme"
 import { KeyboardProvider } from "react-native-keyboard-controller"
 import { loadDateFnsLocale } from "./utils/formatDate"
 import { UserListScreen } from "./screens/SessionListScreen"
+import { DisplayUserTimerScreen } from "./screens/DisplayUserTimerScreen"
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
@@ -113,7 +114,8 @@ export function App() {
           onStateChange={onNavigationStateChange}
         /> */}
         {/* Testing whether we can render the data from the server */}
-        <UserListScreen />
+        {/* <UserListScreen /> */}
+        <DisplayUserTimerScreen />
       </KeyboardProvider>
     </SafeAreaProvider>
   )
