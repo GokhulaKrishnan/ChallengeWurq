@@ -31,6 +31,9 @@ import { KeyboardProvider } from "react-native-keyboard-controller"
 import { loadDateFnsLocale } from "./utils/formatDate"
 import { UserListScreen } from "./screens/SessionListScreen"
 import { DisplayUserTimerScreen } from "./screens/DisplayUserTimerScreen"
+import { WodUiScreen } from "./screens/WodUIScreen"
+import { useAppTheme } from "./utils/useAppTheme"
+import { NavigationContainer } from "@react-navigation/native"
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
 
@@ -107,16 +110,19 @@ export function App() {
   // otherwise, we're ready to render the app
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <KeyboardProvider>
-        {/* <AppNavigator
+      <NavigationContainer>
+        <KeyboardProvider>
+          {/* <AppNavigator
           linking={linking}
           initialState={initialNavigationState}
           onStateChange={onNavigationStateChange}
         /> */}
-        {/* Testing whether we can render the data from the server */}
-        {/* <UserListScreen /> */}
-        <DisplayUserTimerScreen />
-      </KeyboardProvider>
+          {/* Testing whether we can render the data from the server */}
+          {/* <UserListScreen /> */}
+          {/* <DisplayUserTimerScreen /> */}
+          <WodUiScreen />
+        </KeyboardProvider>
+      </NavigationContainer>
     </SafeAreaProvider>
   )
 }

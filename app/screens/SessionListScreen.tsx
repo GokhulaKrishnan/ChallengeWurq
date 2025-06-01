@@ -12,9 +12,7 @@ export const UserListScreen = observer(function UserListScreen() {
     sessionStore.loadSession()
   }, [])
 
-  /*
-   * Rendering individual user
-   */
+  // Rendering individual user
   const renderSession = ({ item: session }: { item: SessionModel }) => {
     return (
       <View
