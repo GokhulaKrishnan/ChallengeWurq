@@ -19,11 +19,11 @@ export const SessionModel = types
     // Can create a view which can change the colour based on the age
     get cardColor() {
       if (self.user.age < 30) {
-        return "#808080"
+        return "#6b7280"
       } else if (self.user.age >= 30 && self.user.age <= 50) {
-        return "#DC143C"
+        return "#f87171"
       } else {
-        return "#0000FF"
+        return "#2980b9"
       }
     },
   }))

@@ -33,6 +33,11 @@ const palette = {
 
   overlay20: "rgba(25, 16, 21, 0.2)",
   overlay50: "rgba(25, 16, 21, 0.5)",
+
+  // Custom colors
+  darkBackground: "#2d404b",
+  lightText: "#e9ecef",
+  semiTransparentOverlay: "rgba(0, 0, 0, 0.15)",
 } as const
 
 export const colors = {
@@ -82,4 +87,6 @@ export const colors = {
    * Error Background.
    */
   errorBackground: palette.angry100,
+
+  // Custom colors
 } as const

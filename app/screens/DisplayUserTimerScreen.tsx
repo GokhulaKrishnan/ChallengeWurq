@@ -1,137 +1,105 @@
+import { Loading } from "@/components/Loading"
 import { useStores } from "@/models"
-import { useEffect, useState } from "react"
-import { ActivityIndicator, ScrollView, Text, View } from "react-native"
+import { useEffect } from "react"
+import { ScrollView, StyleSheet, Text, View } from "react-native"
+import { useTimer } from "@/utils/useTimer"
+import { useFormattedUserData } from "@/utils/useFormattedUserData"
+import { usePromiseInterval } from "@/utils/usePromiseInterval"
 
-/*
+/**
  * This screen renders the user data as a single text box.
  * Starts a timer when the component is mounted
  * Returns a promise which is returned after calling 3 times each at an interval of 1 second.
+ * This screen uses custom hooks to perform all the above functionalities and this will render the UI.
+ * @returns An UI Screen
  */
 export const DisplayUserTimerScreen = () => {
   // Getting the sesssion store
   const { sessionStore } = useStores()
 
-  // State to keep track of the timer
-  const [hour, setHour] = useState(0)
-  const [minute, setMinute] = useState(0)
-  const [second, setSecond] = useState(0)
+  // Getting the formatted time from the custom hook
+  const { formattedTime } = useTimer()
 
-  // State to display a note on top right once the promise is resolved
-  const [alertMessage, setAlertMessage] = useState("")
+  // Getting the formatted user data from the custom hook
+  const formatUserData = useFormattedUserData(sessionStore.positiveAgeUsers)
+
+  // Custom hook to return alert when the promise is resolved
+  const alertMessage = usePromiseInterval()
 
   // Hook to load the user as the component loads
   useEffect(() => {
     sessionStore.loadSession()
   }, [])
 
-  // UseEffect hook to mount timer when it starts
-  useEffect(() => {
-    const timer = (): void => {
-      // Updating the seconds
-      setSecond((prevSecond: number) => {
-        const newSecond: number = prevSecond + 1
-
-        // Limiting the seconds and returning 0 to start the seconds again
-        if (newSecond > 59) {
-          setMinute((prevMinute: number) => prevMinute + 1)
-          return 0
-        }
-        // Returning the new second if it is in the limit
-        return newSecond
-      })
-
-      // Updating the minutes
-      setMinute((prevMinute: number) => {
-        if (prevMinute > 59) {
-          // Change the hour and change minute to 0
-          setHour((prevHour: number) => prevHour + 1)
-          return 0
-        }
-        return prevMinute
-      })
-
-      // Updating the hours
-      setHour((prevHour: number) => {
-        if (prevHour > 23) {
-          return 0
-        }
-        return prevHour
-      })
-    }
-    const intervalId = setInterval(() => {
-      timer()
-    }, 1000)
-
-    // To avoid memory leak, cleaning the interval
-    return () => clearInterval(intervalId)
-  }, [])
-
-  // Creating a function which gets all the data and format it into a single string
-  const formatUserData = (): string => {
-    // Get the data from the store
-    const sessionData = sessionStore.positiveAgeUsers
-
-    // Map through it and format it
-    return sessionData
-      .map(
-        (item) =>
-          `Name: ${item.user.name} ${item.user.lastname}  Age: ${item.user.age}  Location: ${item.location} \nDate: ${item.date}    Fee: ${item.user.fee}\n`,
-      )
-      .join("\n\n")
-  }
-
-  // Implementing a Promise that is returned after 3 intervals of each 1 second
-  useEffect(() => {
-    const threeSecondPromise = new Promise<string>((resolve) => {
-      let count: number = 0
-      const interval = setInterval(() => {
-        count = count + 1
-        if (count === 3) {
-          clearInterval(interval)
-          resolve("Promise completed!")
-        }
-      }, 1000)
-    })
-
-    threeSecondPromise.then((message: string) => {
-      setAlertMessage(message)
-    })
-  }, [])
-
   // Showing the loading state when user is being fetched
   if (sessionStore.isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" />
-        <Text>Loading users...</Text>
-      </View>
-    )
+    return <Loading />
   }
 
   return (
-    <>
-      <ScrollView>
-        <View>{alertMessage != "" && <Text>{alertMessage}</Text>}</View>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+      showsVerticalScrollIndicator={false}
+    >
+      <View style={styles.headerContainer}>
+        <View>
+          <Text style={styles.valueContainer}>{formattedTime}</Text>
+        </View>
+        <View>
+          {alertMessage != "" && <Text style={styles.valueContainer}>{alertMessage}</Text>}
+        </View>
+      </View>
 
-        <View>
-          <Text>
-            {hour < 10 ? `0${hour}` : hour} : {minute < 10 ? `0${minute}` : minute} :{" "}
-            {second < 10 ? `0${second}` : second}
-          </Text>
-        </View>
-        <View>
-          <Text
-            style={{
-              fontFamily: "monospace",
-              borderWidth: 1,
-              borderColor: "red",
-              padding: 10,
-            }}
-          >
-            {formatUserData()}{" "}
-          </Text>
-        </View>
-      </ScrollView>
-    </>
+      <Text style={styles.dataLabel}>User Information</Text>
+      <View style={styles.dataContainer}>
+        <Text style={styles.dataValues}>{formatUserData} </Text>
+      </View>
+    </ScrollView>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#2d404b",
+    padding: 20,
+  },
+
+  contentContainer: {
+    paddingBottom: 40,
+  },
+  valueContainer: {
+    backgroundColor: "#ffffff",
+    padding: 5,
+    fontWeight: "bold",
+    fontSize: 15,
+    borderWidth: 2,
+    borderColor: "#999999",
+  },
+  headerContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    height: 50,
+    padding: 5,
+  },
+  dataContainer: {
+    backgroundColor: "#202b33",
+    marginTop: 10,
+  },
+  dataValues: {
+    fontFamily: "Courier New",
+    borderWidth: 2,
+    borderColor: "#000000",
+    padding: 10,
+    color: "#fdf6e3",
+  },
+  dataLabel: {
+    fontWeight: 400,
+    fontSize: 18,
+    marginTop: 15,
+    color: "#ebe2bb",
+    fontFamily: "Courier New",
+  },
+})

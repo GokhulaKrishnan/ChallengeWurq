@@ -35,8 +35,16 @@ export const WodGraph = () => {
           stepValue={10}
           yAxisColor="transparent"
           yAxisTextStyle={{ color: "#a8a9ad" }}
-          rulesColor="gray"
           xAxisColor="gray"
+          referenceLine1Position={0}
+          showReferenceLine1={true}
+          referenceLine1Config={{
+            color: "white",
+            dashWidth: 7,
+            dashGap: 4,
+            thickness: 2,
+          }}
+          rulesColor="gray"
           yAxisOffset={-20}
           xAxisThickness={1}
           xAxisType="dotted"

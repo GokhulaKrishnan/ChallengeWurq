@@ -21,7 +21,6 @@ import { initI18n } from "./i18n"
 import { useFonts } from "expo-font"
 import { useEffect, useState } from "react"
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context"
-import * as Linking from "expo-linking"
 import * as SplashScreen from "expo-splash-screen"
 import { useInitialRootStore } from "./models"
 import { AppNavigator, useNavigationPersistence } from "./navigators"
@@ -29,34 +28,8 @@ import * as storage from "./utils/storage"
 import { customFontsToLoad } from "./theme"
 import { KeyboardProvider } from "react-native-keyboard-controller"
 import { loadDateFnsLocale } from "./utils/formatDate"
-import { UserListScreen } from "./screens/SessionListScreen"
-import { DisplayUserTimerScreen } from "./screens/DisplayUserTimerScreen"
-import { WodUiScreen } from "./screens/WodUIScreen"
-import { useAppTheme } from "./utils/useAppTheme"
-import { NavigationContainer } from "@react-navigation/native"
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE"
-
-// Web linking configuration
-const prefix = Linking.createURL("/")
-const config = {
-  screens: {
-    Login: {
-      path: "",
-    },
-    Welcome: "welcome",
-    Demo: {
-      screens: {
-        DemoShowroom: {
-          path: "showroom/:queryIndex?/:itemIndex?",
-        },
-        DemoDebug: "debug",
-        DemoPodcastList: "podcast",
-        DemoCommunity: "community",
-      },
-    },
-  },
-}
 
 /**
  * This is the root component of our app.
@@ -102,27 +75,16 @@ export function App() {
     return null
   }
 
-  const linking = {
-    prefixes: [prefix],
-    config,
-  }
-
   // otherwise, we're ready to render the app
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
-      <NavigationContainer>
-        <KeyboardProvider>
-          {/* <AppNavigator
-          linking={linking}
+      <KeyboardProvider>
+        <AppNavigator
+          // linking={linking}
           initialState={initialNavigationState}
           onStateChange={onNavigationStateChange}
-        /> */}
-          {/* Testing whether we can render the data from the server */}
-          {/* <UserListScreen /> */}
-          {/* <DisplayUserTimerScreen /> */}
-          <WodUiScreen />
-        </KeyboardProvider>
-      </NavigationContainer>
+        />
+      </KeyboardProvider>
     </SafeAreaProvider>
   )
 }

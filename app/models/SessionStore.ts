@@ -2,7 +2,6 @@ import { Instance, SnapshotOut, types, flow } from "mobx-state-tree"
 import { SessionModel } from "./Session"
 import { sessionApi } from "@/services/api/apiUser"
 import { SessionItem } from "@/services/api"
-import { colors } from "@/theme"
 
 /*
  * UserStore - Manages a collection of user sessions and loading state.
